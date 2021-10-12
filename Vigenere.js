@@ -168,7 +168,6 @@ class findKeyLength {
     //lets find the key length
     locate(cypher, seqLength, maxKeyLength) {
         cypher = cypher.replace(/\s/g, ''); //remove spaces
-        console.log(cypher)
         const reaptedKeySequences = this.repeatedSequencePosition(cypher, 2);
         const distances = this.getDistances(reaptedKeySequences);
         _.forEach(distances, d => this.getFactors(d));
@@ -214,7 +213,6 @@ class findCypherKey {
         let bestSum = 0;
         const freqs = this.getLetterFrequencies(column)
         for (const l in LANGUAGE_LETTER_FREQ) {
-            //console.log('Checking ' + l)
             let weight = 0;
             for (const letter in freqs){
                 const newChar = this.getShiftedCharacter(letter, l)
@@ -224,10 +222,10 @@ class findCypherKey {
 
         }
         bestLetters.sort(function(a, b) { return b[1] - a[1] });
-        while (bestLetters.length > 3) {
+        //limit to a possibility of 3 letters per keys position. This accounts for unsual conditions and take no time
+        while (bestLetters.length > 3) { 
             bestLetters.pop();
         }
-        //console.log(JSON.stringify(bestLetters))
         let letters = []
         for (const l in bestLetters) {
             letters.push(bestLetters[l][0])
@@ -297,7 +295,8 @@ class findCypherKey {
         const bestKeys = this.findBestKeys(keys)
         if (bestKeys[0].rating < 0.5) return false;
         for (const entry of bestKeys) {
-            console.log('Found canidate ' + entry.key + ' with a rating of ' + (entry.rating*100) + '% with result: ' + entry.decrypted)
+            console.log('Found canidate ' + entry.key + ' with a rating of ' + Math.floor(entry.rating*100) + '% fidelity, with result: ' + entry.decrypted)
+            console.log('')
         }
         return true
     }
@@ -326,4 +325,4 @@ const n1 = d1.getTime();
 const totalTime = n1 - n;
 console.log('Decode ended at ' +  d1 + '.');
 console.log('After running ' + count + ' checks.');
-console.log('Total Time ' + Math.round(totalTime/ (1000*60)) + ' minutes.');
+console.log('Total Time ' + Math.round(totalTime/ (1000*60)) + ' minutes ' + Math.round(totalTime/ (1000*60*60)) + ' seconds.');
