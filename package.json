@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "an-array-of-english-words": "^2.0.0",
+    "underscore": "^1.13.1"
+  }
+}
